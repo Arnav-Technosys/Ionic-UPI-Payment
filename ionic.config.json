@@ -1,0 +1,7 @@
+{
+  "name": "GooglePay",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
