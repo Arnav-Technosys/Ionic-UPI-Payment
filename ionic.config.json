@@ -1,7 +1,8 @@
 {
   "name": "GooglePay",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
