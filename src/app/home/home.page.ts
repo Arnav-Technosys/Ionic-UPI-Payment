@@ -8,6 +8,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ["home.page.scss"],
 })
 export class HomePage {
+  Headerm: any;
+  SubHeaderm: any;
 
   constructor(private webIntent: WebIntent, private alertCtrl: AlertController) {}
 
@@ -20,30 +22,35 @@ export class HomePage {
 
     this.webIntent.startActivityForResult(options).then(
       onSuccess => {
-        console.log('Success', onSuccess);
-        this.presentSuccessAlert();
+        if (onSuccess.extras.Status == 'SUCCESS') {
+          this.Headerm = 'Success',
+          this.SubHeaderm = 'Congratulations !\nPayment Done Successfull';
+          console.log('Success', onSuccess);
+          this.presentSuccessAlert(this.Headerm, this.SubHeaderm);
+        }
+        else if (onSuccess.extras.Status == 'SUBMITTED') {  
+          this.Headerm = 'Payment Submitted',
+          this.SubHeaderm = 'Your Payment is Submitted.\n We Will Contact You When Payment is Done.';
+          console.log('Submitted', onSuccess);
+          this.presentSuccessAlert(this.Headerm, this.SubHeaderm);
+        }
+        else if (onSuccess.extras.Status == 'Failed' || onSuccess.extras.Status == 'FAILURE') {
+          this.Headerm = 'Error',
+          this.SubHeaderm = 'Something Went Wrong..! Try again.';
+          console.log('Failed', onSuccess);
+          this.presentSuccessAlert(this.Headerm, this.SubHeaderm);
+        }
       },
       onError => {
         console.log('Error', onError);
-        this.presentErrorAlert();
+        // this.presentErrorAlert();
       });
   }
 
-  async presentSuccessAlert() {
+  async presentSuccessAlert(Headerm, SubHeaderm) {
     let alert = await this.alertCtrl.create({
-      header: 'Success',
-      subHeader: 'Payment Done Successfull',
-      buttons: ['Okay']
-    });
-    alert.present();
-  }
-
-
-
-  async presentErrorAlert() {
-    let alert = await this.alertCtrl.create({
-      header: 'Error',
-      subHeader: 'Something Went Wrong..! Try again.',
+      header: Headerm,
+      subHeader: SubHeaderm,
       buttons: ['Okay']
     });
     alert.present();
